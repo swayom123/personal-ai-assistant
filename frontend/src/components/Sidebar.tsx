@@ -21,7 +21,7 @@ export const Sidebar: React.FC = () => {
 
   const navItems = [
     { title: 'Overview', path: '/', icon: LayoutDashboard, phase: 1 },
-    { title: 'AI Chat', path: '/chat', icon: MessageSquare, phase: 2, disabled: true },
+    { title: 'AI Chat', path: '/chat', icon: MessageSquare, phase: 3, disabled: false },
     { title: 'Voice & Audio', path: '/voice', icon: Mic, phase: 3, disabled: true },
     { title: 'Semantic Memory', path: '/memory', icon: Brain, phase: 4, disabled: true },
     { title: 'Workspace Files', path: '/files', icon: FolderTree, phase: 5, disabled: true },

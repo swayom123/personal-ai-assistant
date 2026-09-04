@@ -13,4 +13,4 @@ PYTHONPATH=. backend/.venv/bin/pytest tests/ -v
 echo "=== 3. Running Frontend Production Build (TypeScript + Vite) ==="
 npm --prefix frontend run build
 
-echo "=== All Phase 1 Tests Passed Successfully! ==="
+echo "=== All Phase 1 & Phase 3 Tests Passed Successfully! ==="

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './layouts/AppLayout';
 import { HomePage } from './pages/HomePage';
+import { ChatPage } from './pages/ChatPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App: React.FC = () => {
@@ -10,6 +11,7 @@ export const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="chat" element={<ChatPage />} />
           <Route path="diagnostics" element={<HomePage />} />
           <Route path="settings" element={<HomePage />} />
           <Route path="404" element={<NotFoundPage />} />
