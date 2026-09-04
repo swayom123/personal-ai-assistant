@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Server,
   Layers,
@@ -7,6 +8,8 @@ import {
   RefreshCw,
   FolderTree,
   Globe,
+  Mic,
+  ArrowRight,
 } from 'lucide-react';
 import { useHealth } from '../hooks/useHealth';
 import { apiService } from '../services/api';
@@ -58,12 +61,11 @@ export const HomePage: React.FC = () => {
   ];
 
   const phaseRoadmap = [
-    { phase: 1, title: 'Foundation & Core Architecture', desc: 'FastAPI, React frontend shell, logging, health check, Electron bridge.', current: true },
-    { phase: 2, title: 'Agentic AI Engine & LLM Orchestration', desc: 'Local/cloud model routing, token management, streaming inference.', current: false },
-    { phase: 3, title: 'Voice & Ambient Audio Subsystem', desc: 'Duplex real-time STT/TTS, wake-word detection, audio visualizer.', current: false },
-    { phase: 4, title: 'Semantic Memory & Knowledge Graph', desc: 'Vector embeddings, user facts, episodic context recall.', current: false },
-    { phase: 5, title: 'Desktop Workspace & File Integration', desc: 'Local file indexing, code search, window controls, OS hooks.', current: false },
-    { phase: 6, title: 'Autonomous Automations & Plugins', desc: 'Scheduled cron routines, background daemons, MCP tools.', current: false },
+    { phase: 1, title: 'Foundation & Core Architecture', desc: 'FastAPI, React frontend shell, logging, health check, Electron bridge.', current: false, status: 'Completed' },
+    { phase: 3, title: 'AI Core and LLM Engine', desc: 'OpenAI/Ollama/Mock providers, context builder, SSE streaming chat, conversations.', current: false, status: 'Completed' },
+    { phase: 4, title: 'Voice Assistant & Audio Pipeline', desc: 'Faster-Whisper STT, Piper/Coqui TTS, OpenWakeWord/Porcupine, duplex voice studio.', current: true, status: 'Completed' },
+    { phase: 5, title: 'Semantic Memory & Knowledge Graph', desc: 'Vector embeddings, user facts, episodic context recall.', current: false, status: 'Upcoming' },
+    { phase: 6, title: 'Desktop Workspace & Automations', desc: 'Local file indexing, window controls, scheduled routines, MCP tools.', current: false, status: 'Upcoming' },
   ];
 
   return (
@@ -73,14 +75,14 @@ export const HomePage: React.FC = () => {
         <div className="max-w-3xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-muted border border-primary/30 text-primary text-xs font-mono">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            Phase 1 / 6 • Personal AI Assistant Foundation
+            Phase 1, 3 & 4 Active • Voice Assistant & AI Core
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">
-            Clean, Scalable Foundation
+            Duplex Voice & Central AI Engine
           </h1>
           <p className="text-text-secondary text-sm md:text-base leading-relaxed">
-            Production-grade architecture for a personal laptop AI assistant. Core services, API versioning,
-            Request ID tracking, structured logging, and frontend application shell are verified and operational.
+            Production-grade personal laptop AI assistant. Central LLM reasoning engine, Faster-Whisper
+            speech-to-text, Piper text-to-speech, configurable wake-word detection, and real-time audio interaction.
           </p>
         </div>
       </section>
@@ -176,6 +178,54 @@ export const HomePage: React.FC = () => {
                 <pre className="text-emerald-400 overflow-x-auto p-2 rounded bg-surface/50 border border-border/50 text-[11px]">
                   {JSON.stringify(manualHealthResponse || health || { status: 'ok', service: 'personal-ai-assistant' }, null, 2)}
                 </pre>
+              </div>
+            </div>
+          </div>
+
+          {/* Phase 4 Voice Assistant Subsystem Quick Card */}
+          <div className="glass-card p-6 rounded-2xl border border-border bg-gradient-to-r from-surface to-surface-subtle space-y-4 shadow-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20">
+                  <Mic className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-text-primary">
+                    Voice Assistant Subsystem (Phase 4)
+                  </h3>
+                  <p className="text-xs text-text-secondary">
+                    Faster-Whisper STT • Piper TTS • OpenWakeWord & Porcupine Ready
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/voice"
+                  className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-medium flex items-center gap-2 transition-all shadow-md shadow-primary/20"
+                >
+                  Open Voice Studio
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+              <div className="p-3 rounded-xl bg-background border border-border">
+                <span className="text-text-muted text-[11px] block">Wake Word</span>
+                <span className="text-primary font-bold">"Hey Max"</span>
+              </div>
+              <div className="p-3 rounded-xl bg-background border border-border">
+                <span className="text-text-muted text-[11px] block">Speech-to-Text</span>
+                <span className="text-text-primary">Faster-Whisper (base)</span>
+              </div>
+              <div className="p-3 rounded-xl bg-background border border-border">
+                <span className="text-text-muted text-[11px] block">Text-to-Speech</span>
+                <span className="text-text-primary">Piper ONNX</span>
+              </div>
+              <div className="p-3 rounded-xl bg-background border border-border">
+                <span className="text-text-muted text-[11px] block">States</span>
+                <span className="text-emerald-400">IDLE • DUPLEX</span>
               </div>
             </div>
           </div>

@@ -57,6 +57,25 @@ class Settings(BaseSettings):
     llm_timeout_seconds: float = Field(default=30.0, description="LLM provider HTTP timeout in seconds")
     profile_config_path: str = Field(default="backend/config/profile.json", description="Path to assistant profile JSON")
 
+    # Phase 4 — Voice Assistant Configuration
+    voice_input_device: Optional[str] = Field(default=None, description="Audio input device ID / name")
+    voice_output_device: Optional[str] = Field(default=None, description="Audio output device ID / name")
+    voice_wake_word: str = Field(default="Hey Max", description="Configurable wake word")
+    voice_wake_word_detector: str = Field(
+        default="openwakeword",
+        description="Wake word engine: 'openwakeword', 'porcupine', or 'builtin'"
+    )
+    porcupine_access_key: Optional[str] = Field(default=None, description="Picovoice Porcupine AccessKey if using porcupine")
+    voice_assistant_name: str = Field(default="Max", description="Configurable assistant name")
+    voice_stt_model: str = Field(default="base", description="Faster-Whisper model size: tiny, base, small, medium")
+    voice_stt_language: str = Field(default="en", description="Default language code or 'auto'")
+    voice_tts_provider: str = Field(default="piper", description="TTS Provider: 'piper', 'coqui', or 'mock'")
+    voice_tts_voice: str = Field(default="en_US-lessac-medium", description="TTS voice name/model")
+    voice_speech_speed: float = Field(default=1.0, description="Voice playback speed multiplier (0.5 to 2.0)")
+    voice_volume: float = Field(default=1.0, description="Voice playback volume multiplier (0.0 to 1.0)")
+    voice_vad_filter: bool = Field(default=True, description="Enable Silero VAD noise handling in Faster-Whisper")
+    voice_settings_path: str = Field(default="backend/config/voice_settings.json", description="Persistent voice settings file")
+
 @lru_cache
 def get_settings() -> Settings:
     return Settings()

@@ -64,7 +64,71 @@ export interface ApiError {
 
 export interface SystemInfo {
   version: string;
+  uptime: number;
   environment: string;
-  architecture: string;
-  isElectron: boolean;
+}
+
+// Phase 4 — Voice Assistant Types
+export type VoiceState = 'IDLE' | 'LISTENING' | 'PROCESSING' | 'SPEAKING' | 'ERROR';
+
+export interface AudioDevice {
+  id: string;
+  name: string;
+  is_default: boolean;
+  type: 'input' | 'output';
+  channels: number;
+  sample_rate: number;
+}
+
+export interface AudioDevicesResponse {
+  inputs: AudioDevice[];
+  outputs: AudioDevice[];
+  default_input?: string;
+  default_output?: string;
+}
+
+export interface VoiceSettings {
+  microphone?: string;
+  speaker?: string;
+  voice: string;
+  speed: number;
+  volume: number;
+  wake_word: string;
+  assistant_name: string;
+  language: string;
+  tts_provider: string;
+  stt_model: string;
+  vad_filter: boolean;
+}
+
+export interface VoiceInfo {
+  id: string;
+  name: string;
+  provider: string;
+  language: string;
+  gender?: string;
+}
+
+export interface TranscriptionSegment {
+  id: number;
+  start: number;
+  end: number;
+  text: string;
+}
+
+export interface TranscriptionResponse {
+  text: string;
+  language: string;
+  language_probability: number;
+  duration: number;
+  segments: TranscriptionSegment[];
+}
+
+export interface VoiceInteractionResponse {
+  transcript: string;
+  text_response: string;
+  conversation_id: string;
+  audio_base64?: string;
+  voice_state: VoiceState;
+  processing_time_ms: number;
 }

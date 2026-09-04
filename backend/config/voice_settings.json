@@ -1,0 +1,13 @@
+{
+  "microphone": "default",
+  "speaker": "default",
+  "voice": "en_US-lessac-medium",
+  "speed": 1.25,
+  "volume": 1.0,
+  "wake_word": "Hey TestAssistant",
+  "assistant_name": "Max",
+  "language": "en",
+  "tts_provider": "piper",
+  "stt_model": "base",
+  "vad_filter": true
+}

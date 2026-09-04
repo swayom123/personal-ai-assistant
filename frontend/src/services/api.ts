@@ -5,6 +5,11 @@ import {
   ModelsResponse,
   ConversationItem,
   ConversationDetail,
+  AudioDevicesResponse,
+  VoiceSettings,
+  VoiceInfo,
+  TranscriptionResponse,
+  VoiceInteractionResponse,
 } from '../types/api';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
@@ -182,6 +187,117 @@ class ApiService {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error(`Failed to delete conversation: HTTP ${response.status}`);
+  }
+
+  // Phase 4 — Voice Assistant Methods
+  async getVoiceDevices(): Promise<AudioDevicesResponse> {
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/devices`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+    });
+    if (!response.ok) throw new Error(`Failed to get voice devices: HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async getVoiceSettings(): Promise<VoiceSettings> {
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/settings`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+    });
+    if (!response.ok) throw new Error(`Failed to get voice settings: HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async updateVoiceSettings(settings: VoiceSettings): Promise<VoiceSettings> {
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/settings`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(settings),
+    });
+    if (!response.ok) throw new Error(`Failed to update voice settings: HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async getVoiceVoices(): Promise<VoiceInfo[]> {
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/voices`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+    });
+    if (!response.ok) throw new Error(`Failed to get voices: HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async transcribeAudio(
+    audio: Blob | string,
+    language?: string,
+    vadFilter = true
+  ): Promise<TranscriptionResponse> {
+    const formData = new FormData();
+    if (typeof audio === 'string') {
+      formData.append('audio_base64', audio);
+    } else {
+      formData.append('file', audio, 'recording.webm');
+    }
+    if (language) formData.append('language', language);
+    formData.append('vad_filter', vadFilter ? 'true' : 'false');
+
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/transcribe`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) throw new Error(`Transcription failed: HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async speakText(
+    text: string,
+    options: { provider?: string; voice?: string; speed?: number; volume?: number } = {}
+  ): Promise<Blob> {
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/speak?output_format=audio`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text,
+        provider: options.provider,
+        voice: options.voice,
+        speed: options.speed,
+        volume: options.volume,
+      }),
+    });
+    if (!response.ok) throw new Error(`Speech synthesis failed: HTTP ${response.status}`);
+    return response.blob();
+  }
+
+  async voiceInteract(
+    audio: Blob | string,
+    options: { conversationId?: string; provider?: string; model?: string } = {}
+  ): Promise<VoiceInteractionResponse> {
+    const formData = new FormData();
+    if (typeof audio === 'string') {
+      formData.append('audio_base64', audio);
+    } else {
+      formData.append('file', audio, 'user_prompt.webm');
+    }
+    if (options.conversationId) formData.append('conversation_id', options.conversationId);
+    if (options.provider) formData.append('provider', options.provider);
+    if (options.model) formData.append('model', options.model);
+
+    const response = await fetch(`${this.baseUrl}/api/v1/voice/interact`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) throw new Error(`Voice interaction failed: HTTP ${response.status}`);
+    return response.json();
+  }
+
+  getVoiceWsUrl(): string {
+    const wsBase = this.baseUrl.replace(/^http:\/\//, 'ws://').replace(/^https:\/\//, 'wss://');
+    return `${wsBase}/api/v1/voice/stream`;
   }
 }
 
