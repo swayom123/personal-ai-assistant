@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "write_file(/home/swayom/Desktop/AI_Assistant/**)",
+      "read_file(/home/swayom/Desktop/AI_Assistant/**)",
+      "command(*)"
+    ],
+    "deny": [
+      "command(rm -rf *)",
+      "command(rm -rf /)",
+      "command(git reset --hard *)",
+      "command(git push --force *)"
+    ]
+  }
+}
